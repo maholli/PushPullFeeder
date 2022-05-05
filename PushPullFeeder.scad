@@ -2766,8 +2766,8 @@ if (do_lever) {
                         [dog_eff_x-dog_length+dog_slant*dog_height0, 
                                 dog_eff_y+dog_height0],
                         dog_spring_bend_eff,
-                        -spring_strength/0.75, // MAX LEVER HACK
-                        spring_strength/0.75); // MAX LEVER HACK
+                        -spring_strength/1, // MAX LEVER HACK
+                        spring_strength/1); // MAX LEVER HACK
                     // dog
                     translate([dog_eff_x, dog_eff_y])
                         translate(dog_neck)
