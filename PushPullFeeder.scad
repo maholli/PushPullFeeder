@@ -2434,8 +2434,8 @@ function inset_profile(cover=true) = [
     ],
     [tape_width_eff, 0],
     
-    [tape_width_eff, -tape_thickness],
-    [tape_width_eff-tape_margin+MAX_TAPE_HACK+0.1, -tape_thickness],
+    [tape_width_eff, -tape_thickness-MAX_TAPE_HACK],
+    [tape_width_eff-tape_margin+MAX_TAPE_HACK+0.1, -tape_thickness-MAX_TAPE_HACK],
     
     /* does not work in the slicer, unfortunately (wont 90° bridge it)
     // support, if needed and possible
@@ -2567,9 +2567,9 @@ if (do_inset) {
                                             [dog_x0-inset_edge, 
                                                 inset_edge+e], 
                                             [dog_x0, 
-                                                    -tape_thickness*tape_inset_cover_tension-e],        
+                                                    -MAX_TAPE_HACK-tape_thickness*tape_inset_cover_tension-e],        
                                             [dog_nominal_x+sprocket_pitch, 
-                                                    -tape_thickness*tape_inset_cover_tension-e],        
+                                                    -MAX_TAPE_HACK-tape_thickness*tape_inset_cover_tension-e],        
                                             [dog_nominal_x+sprocket_pitch-inset_edge, inset_edge+e],        
                                             ]);
                                     }
@@ -2578,9 +2578,9 @@ if (do_inset) {
                                         polygon([
                                             [dog_x0-sprocket_pitch*2, inset_edge+e], 
                                             [dog_x0-sprocket_pitch*2+inset_edge, 
-                                                    -tape_thickness*tape_inset_cover_tension-e],        
+                                                    -tape_thickness*tape_inset_cover_tension-e-MAX_TAPE_HACK],        
                                             [base_begin, 
-                                                    -tape_thickness*tape_inset_cover_tension-e],        
+                                                    -tape_thickness*tape_inset_cover_tension-e-MAX_TAPE_HACK],        
                                             [base_begin, inset_edge+e],        
                                             ]);
                                     }
@@ -2588,10 +2588,10 @@ if (do_inset) {
                                 
                                 // dog thorn groove
                                 groove = [
-                                    [sprocket_margin-tape_min_margin+thorn_groove/2, -tape_thickness+e],
-                                    [sprocket_margin-tape_min_margin-thorn_groove/2, -tape_thickness-thorn_groove],
-                                    [sprocket_hole_margin+thorn_groove/2, -tape_thickness-thorn_groove],
-                                    [max(0, sprocket_hole_margin-thorn_groove/2), -tape_thickness+e]
+                                    [sprocket_margin-tape_min_margin+thorn_groove/2, -tape_thickness+e-MAX_TAPE_HACK],
+                                    [sprocket_margin-tape_min_margin-thorn_groove/2, -tape_thickness-thorn_groove-MAX_TAPE_HACK],
+                                    [sprocket_hole_margin+thorn_groove/2, -tape_thickness-thorn_groove-MAX_TAPE_HACK],
+                                    [max(0, sprocket_hole_margin-thorn_groove/2), -tape_thickness+e-MAX_TAPE_HACK]
                                 ];
                                 translate([dog_nominal_x+sprocket_pitch, 0, 0]) {
                                     rotate([0, -90, 0]) {
@@ -2608,7 +2608,7 @@ if (do_inset) {
                     // tape reversal blocking thorn
                     if (reversal_blocking_thorn_length > 0) {
                         x = dog_nominal_x-dog_travel_nominal-sprocket_pitch*2;
-                        translate([round(x/sprocket_pitch)*sprocket_pitch, e, 
+                        translate([round(x/sprocket_pitch)*sprocket_pitch, e-MAX_TAPE_HACK, 
                             sprocket_hole_distance-thorn_sideways_tension]) {
                             rotate([90, 0, 0]) 
                                 thorn(diameter=thorn_diameter, 
