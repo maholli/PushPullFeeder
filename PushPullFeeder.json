@@ -805,9 +805,9 @@
             "test_play_inc": "0.02",
             "test_play_min": "-0.04",
             "thorn_diameter_ratio": "1",
-            "thorn_length": "1",
+            "thorn_length": "1.1",
             "thorn_min_groove": "0.4",
-            "thorn_overhang": "0.025",
+            "thorn_overhang": "0.03",
             "thorn_pointedness": "0.67",
             "thorn_sideways_tension": "0.1",
             "wall_strength_min": "1.2"
