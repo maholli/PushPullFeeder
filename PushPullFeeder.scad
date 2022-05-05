@@ -555,7 +555,7 @@ extrusion_mount_slot_outer=extrusion_mount_slot_inner
 handle_diameter=22;
 // Handle grip strength
 handle_strength=6;
-handle_lock_diameter=reel_axle/2;//extrusion_mount_slot_inner*2;
+handle_lock_diameter=reel_axle/1.5;//extrusion_mount_slot_inner*2;
 // Length of handle
 handle_pull_length=82;
 // Handle lock inner axle (set 0 to switch off)
@@ -574,7 +574,7 @@ handle_lock_debug=false;
 // Distance of the lock from the extrusion
 handle_lock_axle_dist=8;
 handle_lock_axle_x=extrusion_mount_x-extrusion_mount_w/2-handle_lock_axle_dist-0;
-handle_lock_axle_y=extrusion_mount_y+extrusion_mount_h/2+handle_lock_diameter/2-5;
+handle_lock_axle_y=extrusion_mount_y+extrusion_mount_h/2+handle_lock_diameter/2-4;
 handle_lock_edge_x=extrusion_mount_x-extrusion_mount_w/2+extrusion_mount_slot_thickness;
 handle_lock_edge_y=extrusion_mount_y+extrusion_mount_h/2-extrusion_mount_unit/2
     +extrusion_mount_slot_inner/2;
@@ -751,7 +751,7 @@ tape_chute_fixture_y=-base_height-fixture_axle*0.75;
 tape_chute_fixture_strength=fixture_axle*0.6;
 tape_chute_end_angle=90-tape_chute_angle;
 tape_chute_end_x=base_end+cos(tape_chute_end_angle)*tape_chute_diameter/2;
-tape_chute_end_y=(sin(tape_chute_end_angle)-1)*tape_chute_diameter/2;
+tape_chute_end_y=(sin(tape_chute_end_angle)-1)*tape_chute_diameter/2.25;
 tape_chute_reverse_x=tape_chute_end_x+cos(tape_chute_end_angle)*tape_chute_reverse_diameter/2;
 tape_chute_reverse_y=tape_chute_end_y+sin(tape_chute_end_angle)*tape_chute_reverse_diameter/2;
 tape_chute_knee_x=tape_chute_fixture_x;
@@ -2416,16 +2416,16 @@ tape_margin=(tape_width_eff-sprocket_gap-tape_emboss_size)/2-layer_height;
 tape_inset_support=false;//(tape_emboss > extrusion_width*2);
 tape_45_margin=tape_margin-tape_emboss;
 tape_margin_eff=tape_inset_support ? tape_margin : max(-thorn_groove, tape_45_margin); // just as good as possible
-
+MAX_TAPE_HACK = 1; // TAPE HACKS EDITS START HERE
 function inset_profile(cover=true) = [
     [sprocket_margin, -base_height-e],
     [tape_width_eff+reel_wall-e, -base_height-e],
     each [ if (cover) each [
         [tape_width_eff+reel_wall-e, inset_edge],
         [0, inset_edge-tape_thickness*tape_inset_cover_tension],
-        [0, -tape_thickness*tape_inset_cover_tension],
+        [0, -MAX_TAPE_HACK-tape_thickness*tape_inset_cover_tension],
         each arc(
-        [tape_width_eff-inset_edge, 0],
+        [tape_width_eff-inset_edge, 0-MAX_TAPE_HACK],
         [tape_width_eff, 0],
         -135),
     ] else each [
@@ -2435,7 +2435,7 @@ function inset_profile(cover=true) = [
     [tape_width_eff, 0],
     
     [tape_width_eff, -tape_thickness],
-    [tape_width_eff-tape_margin, -tape_thickness],
+    [tape_width_eff-tape_margin+MAX_TAPE_HACK+0.1, -tape_thickness],
     
     /* does not work in the slicer, unfortunately (wont 90° bridge it)
     // support, if needed and possible
@@ -2449,13 +2449,13 @@ function inset_profile(cover=true) = [
     ]],
     */
     
-    [tape_width_eff-tape_margin, -tape_thickness-tape_emboss],
-    [sprocket_gap+tape_margin, -tape_thickness-tape_emboss],
-    [sprocket_gap+tape_margin_eff, -tape_thickness],
+    [tape_width_eff-tape_margin+MAX_TAPE_HACK+0.1, -tape_thickness-tape_emboss-MAX_TAPE_HACK], 
+    [sprocket_gap+tape_margin, -tape_thickness-tape_emboss-MAX_TAPE_HACK],   
+    [sprocket_gap+tape_margin_eff, -tape_thickness-MAX_TAPE_HACK],           
     //[sprocket_margin-tape_margin, -tape_thickness],
     //[sprocket_hole_margin, -tape_thickness],
-    [bevel_z, -tape_thickness],
-    [0, -tape_thickness-bevel_z],
+    [bevel_z, -tape_thickness-MAX_TAPE_HACK],                                
+    [0, -tape_thickness-bevel_z-MAX_TAPE_HACK],
     [0, -base_height-e],
 ];
 
@@ -2554,9 +2554,9 @@ if (do_inset) {
                                         polygon([
                                                 [cover_tape_edge+tape_inset_window_length, inset_edge+e],
                                                 [cover_tape_edge+tape_inset_window_length+inset_edge, 
-                                                    -tape_thickness*tape_inset_cover_tension-e],
+                                                    -MAX_TAPE_HACK-tape_thickness*tape_inset_cover_tension-e],
                                                 [cover_tape_edge, 
-                                                    -tape_thickness*tape_inset_cover_tension-e],
+                                                    -MAX_TAPE_HACK-tape_thickness*tape_inset_cover_tension-e],
                                                 [cover_tape_edge-inset_edge, inset_edge+e],
                                         ]);
                                     }
@@ -2766,8 +2766,8 @@ if (do_lever) {
                         [dog_eff_x-dog_length+dog_slant*dog_height0, 
                                 dog_eff_y+dog_height0],
                         dog_spring_bend_eff,
-                        -spring_strength/2,
-                        spring_strength/2);
+                        -spring_strength/0.75, // MAX LEVER HACK
+                        spring_strength/0.75); // MAX LEVER HACK
                     // dog
                     translate([dog_eff_x, dog_eff_y])
                         translate(dog_neck)
