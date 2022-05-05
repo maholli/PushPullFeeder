@@ -555,7 +555,7 @@ extrusion_mount_slot_outer=extrusion_mount_slot_inner
 handle_diameter=22;
 // Handle grip strength
 handle_strength=6;
-handle_lock_diameter=reel_axle;//extrusion_mount_slot_inner*2;
+handle_lock_diameter=reel_axle/2;//extrusion_mount_slot_inner*2;
 // Length of handle
 handle_pull_length=82;
 // Handle lock inner axle (set 0 to switch off)
@@ -573,8 +573,8 @@ handle_lock_angle=22.5; // [10:0.01:35]
 handle_lock_debug=false;
 // Distance of the lock from the extrusion
 handle_lock_axle_dist=8;
-handle_lock_axle_x=extrusion_mount_x-extrusion_mount_w/2-handle_lock_axle_dist;
-handle_lock_axle_y=extrusion_mount_y+extrusion_mount_h/2+handle_lock_diameter/2;
+handle_lock_axle_x=extrusion_mount_x-extrusion_mount_w/2-handle_lock_axle_dist-0;
+handle_lock_axle_y=extrusion_mount_y+extrusion_mount_h/2+handle_lock_diameter/2-5;
 handle_lock_edge_x=extrusion_mount_x-extrusion_mount_w/2+extrusion_mount_slot_thickness;
 handle_lock_edge_y=extrusion_mount_y+extrusion_mount_h/2-extrusion_mount_unit/2
     +extrusion_mount_slot_inner/2;
