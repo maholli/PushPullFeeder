@@ -2256,9 +2256,9 @@ if (do_base_plate) {
                     translate([block_axle_x, block_axle_y, -5*e])
                         cylinder_p(d=cross_screw_diameter+screw_play, 
                             h=base_thickness+tape_width+reel_wall+10*e);
-                    translate([(base_begin+tape_inset_begin)/2, -base_height/2, -5*e])
+                    translate([(base_begin+tape_inset_begin)/2, (-base_height-MAX_TAPE_HACK)/2, -5*e])
                         cylinder_p(d=cross_screw_diameter+screw_play, 
-                            h=base_thickness+tape_width+reel_wall+10*e);
+                            h=base_thickness+tape_width-+reel_wall+10*e);
                     
                     /*
                     // anti-vibration structures
